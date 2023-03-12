@@ -18,7 +18,9 @@ def paint(pixels,IMAGE):
         for x in range(IMAGE.w):
             print("\r\r\r"+str(offset+x-1)+"/"+str(IMAGE.h*IMAGE.w),end=" pixels drawn.")
             try:
-                display.putpixel((x,y),tuple(pixels[offset+x-1]))
+                # To Counteract a coloring error rgb are flipped
+                b,g,r = pixels[offset+x-1]
+                display.putpixel((x,y),(r,g,b))
             except IndexError:
                 print("Hit IndexError. Probable Cause: Image Contains Color-Map Data.")
                 print("Image will come out corrupted.")
