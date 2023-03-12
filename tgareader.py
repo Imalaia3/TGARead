@@ -8,6 +8,26 @@ and is only 24-bit color.
 
 """
 
+
+def paint(pixels,IMAGE):
+    display = Image.new("RGB",(IMAGE.w,IMAGE.h))
+    print("Painting image...")
+
+    offset = 0
+    for y in range(IMAGE.h):
+        for x in range(IMAGE.w):
+            print("\r\r\r"+str(offset+x-1)+"/"+str(IMAGE.h*IMAGE.w),end=" pixels drawn.")
+            try:
+                display.putpixel((x,y),tuple(pixels[offset+x-1]))
+            except IndexError:
+                print("Hit IndexError. Probable Cause: Image Contains Color-Map Data.")
+                print("Image will come out corrupted.")
+        offset += IMAGE.w
+
+    print("\nDone")
+    display.show()
+
+
 if len(sys.argv) < 3:
     print("Syntax: tgareader <image> <showimg (1-True 0-False)>")
     exit()
@@ -92,20 +112,5 @@ if IMAGE.yo == b'\x00\x00' and IMAGE.xo == b'\x00\x00':
 # Show Image
 if sys.argv[2] == "0":
     exit()
+paint(pixels,IMAGE)
 
-display = Image.new("RGB",(IMAGE.w,IMAGE.h))
-print("Painting image...")
-
-offset = 0
-for y in range(IMAGE.h):
-    for x in range(IMAGE.w):
-        print("\r\r\r"+str(offset+x-1)+"/"+str(IMAGE.h*IMAGE.w),end=" pixels drawn.")
-        try:
-            display.putpixel((x,y),tuple(pixels[offset+x-1]))
-        except IndexError:
-            print("Hit IndexError. Probable Cause: Image Contains Color-Map Data.")
-            print("Image will come out corrupted.")
-    offset += IMAGE.w
-
-print("\nDone")
-display.show()
